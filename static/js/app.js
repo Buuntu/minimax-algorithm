@@ -1,13 +1,17 @@
 var app = angular.module("myApp", []);
 
+
 app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     $scope.inactive = true;
+    $scope.loading = false;
 
     $scope.click = function(row, col) {
         if ($scope.board[row][col] === ' ') {
             $scope.board[row][col] = 'X';
             $scope.inactive = true;
+            $scope.loading = true;
             $http.post('/move', { player: 'X', computer: 'O', board: $scope.board }).then(function(response) {
+                $scope.loading = false;
                 console.log(response);
                 console.log(response.data.player_wins);
                 if (response.data.player_wins) {
@@ -23,6 +27,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
 
                 $scope.inactive = false;
             }, function(response) {
+                $scope.loading = false;
                 alert('Server error');
             });
         }
