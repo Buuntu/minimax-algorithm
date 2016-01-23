@@ -1,0 +1,26 @@
+.cell {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    vertical-align: center;
+    transition: background-color 0.5s ease;
+    font-size: 50px;
+    font-family: Aria, Helvetica, sans-serif;
+    font-weight: bold;
+    border: 2px solid #ddd;
+}
+
+.board {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cell:hover {
+    cursor: pointer;
+    background-color: orange;
+}
+
+.inactive:hover {
+    cursor: default;
+    background-color: inherit;
+}

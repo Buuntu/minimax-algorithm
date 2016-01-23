@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <!-- Angular -->
+    <script type="text/javascript" src="/static/js/app.js"></script>
+    <title>Tic Tac Toe</title>
+</head>
+<body ng-app="myApp">
+    <div ng-controller="MainController">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+            <h1>Tic-Tac-Toe</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <table class="board">
+                        <tr ng-repeat="row in [0,1,2]">
+                            <td ng-repeat="col in [0,1,2]" class="cell" ng-click="click(row, col)" ng-disabled="inactive"
+                                ng-class="{ 'inactive': board[row][col] != ' ' }" ng-bind="board[row][col]"></td>
+                        </tr>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: 50px">
+            <div class="col-xs-12">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <button type="button" class="btn btn-info" ng-click="restart()">Start Over</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
