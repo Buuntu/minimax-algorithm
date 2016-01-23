@@ -1,4 +1,6 @@
 from copy import deepcopy
+from random import randint
+from sys import stderr
 
 class Game:
     'Class used to keep track of the board and calculate computer moves'
@@ -12,6 +14,12 @@ class Game:
 
     # Calculate computer move based on minimax algorithm
     def calculate_move(self):
+        # if it's the computer's first turn, take one of the corners (much faster than calculating with algorithm)
+        if self.is_board_empty():
+            print("board is empty", file=stderr)
+            move = self.random_corner()
+            return {'row': move[0], 'col': move[1]}
+
         move = self.minimax(self.computer)
 
         if not move[1]:
@@ -87,6 +95,15 @@ class Game:
 
         return True
 
+    # Checks if it's a new game
+    def is_board_empty(self):
+        for row in range(3):
+            for col in range(3):
+                if self.board[row][col] != self.empty:
+                    return False
+
+        return True
+
     # Returns the winning list of coordinates as a list or false otherwise
     def has_won(self, mark):
         has_won_horizontal = self.won_horizontal(mark)
@@ -137,3 +154,14 @@ class Game:
             self.board[row][col] = mark
 
         return self
+
+    def random_corner(self):
+        i = randint(1, 4)
+        if i == 1:
+            return [0, 0]
+        elif i == 2:
+            return [2, 0]
+        elif i == 3:
+            return [0, 2]
+        else:
+            return [2, 2]

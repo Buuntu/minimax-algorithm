@@ -38,8 +38,6 @@
     top: 125px;
 }
 
-
-
 #loading-screen {
     background-color: gray;
     opacity: 0.075;
@@ -52,4 +50,30 @@
     margin-left: auto;
     margin-right: auto;
     z-index: 20;
+}
+
+.choice {
+    width: 125px;
+}
+
+.winning {
+    background-color: #2C92E1;
+}
+
+.winning:hover {
+    background-color: #6BB2EA;
+}
+
+.btn {
+    background-color: #2C92E1 !important;
+}
+
+.btn:hover {
+    background-color: #6BB2EA !important;
+}
+
+@media (max-width: 600px){
+    html, body {
+      font-size: 130%;
+    }
 }

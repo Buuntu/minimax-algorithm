@@ -21,11 +21,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="text-center">
-                    <div id="loading-screen" ng-show="loading"></div>
+                    <div id="loading-screen" ng-show="loading || new_game"></div>
                     <table class="board">
                         <tr ng-repeat="row in [0,1,2]">
-                            <td ng-repeat="col in [0,1,2]" class="cell" ng-click="click(row, col)" ng-disabled="inactive"
-                                ng-class="{ 'inactive': board[row][col] != ' ' }" ng-bind="board[row][col]"></td>
+                            <td ng-repeat="col in [0,1,2]" class="cell" ng-click="click(row, col)" ng-disabled="game_over"
+                                ng-class="{ 'inactive': board[row][col] != ' ' || game_over, 'winning': winning[row][col] }" ng-bind="board[row][col]"></td>
                         </tr>
                 </table>
                 </div>
@@ -36,9 +36,32 @@
                 <img ng-show="loading" id="loader" src="/static/img/ajax-loader.gif">
             </div>
         </div>
+        <div ng-show="! new_game">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button type="button" class="btn btn-info btn-lg" ng-click="restart()" ng-disabled="new_game">Start Over</button>
+                </div>
+            </div>
+            <div class="row" style="height: 20px"></div>
+        </div>
+        <div ng-show="new_game">
+            <div class="row" style="height: 60px">
+                <div class="col-xs-12 text-center">
+                    <h3>Who goes first?</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-primary btn-lg choice pull-right" ng-click="player_goes_first()">Player</button>
+                </div>
+                <div class="col-xs-6 pull-left">
+                    <button type="button" class="btn btn-primary btn-lg choice" ng-click="computer_goes_first()">Computer</button>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <button type="button" class="btn btn-info btn-lg" ng-click="restart()">Start Over</button>
+                <h3 ng-bind="message"></h3>
             </div>
         </div>
     </div>
