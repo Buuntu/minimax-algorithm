@@ -48,5 +48,5 @@ def move():
                    computer_wins = False, player_wins = False, board = game.board)
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    # app.debug = True
+    app.run(host='0.0.0.0')
