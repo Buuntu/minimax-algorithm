@@ -162,7 +162,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
             return [[0, 0], [1, 1], [2, 2]];
         }
         else if ($scope.board[2][0] == mark && ($scope.board[2][0] == $scope.board[1][1]) && ($scope.board[2][0] == $scope.board[0][2])) {
-            return [[2, 0], [1, 1], [2, 0]];
+            return [[2, 0], [1, 1], [0, 2]];
         }
 
         return false;

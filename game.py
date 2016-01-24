@@ -1,6 +1,5 @@
 from copy import deepcopy
 from random import randint
-from sys import stderr
 
 class Game:
     'Class used to keep track of the board and calculate computer moves'
@@ -14,9 +13,8 @@ class Game:
 
     # Calculate computer move based on minimax algorithm
     def calculate_move(self):
-        # if it's the computer's first turn, take one of the corners (much faster than calculating with algorithm)
+        # if it's the computer's first turn, take one of the corners (much faster than calculating with recursion)
         if self.is_board_empty():
-            print("board is empty", file=stderr)
             move = self.random_corner()
             return {'row': move[0], 'col': move[1]}
 
@@ -40,19 +38,18 @@ class Game:
             return [0, None]
 
         if mark == self.player:
-            best = [-100, None]
+            best = [-2, None]
         else:
-            best = [+100, None]
+            best = [+2, None]
 
         # Loop through all available moves
         for move in self.get_moves():
             # Duplicate board and make move
-            new_board = Game('X', 'O')
+            new_board = Game(self.player, self.computer)
             new_board.board = deepcopy(self.board)
-            new_board.move(mark, move[0], move[1])
 
-            # Recursively calculate value of next move
-            value = new_board.minimax(self.opponent(mark))[0]
+            # Make the move and recursively calculate the value of the next move
+            value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark))[0]
 
             # Player moves
             if mark == self.player:
@@ -66,20 +63,22 @@ class Game:
         return best
 
     def opponent(self, mark):
-        if mark == 'X':
-            return 'O'
+        if mark == self.player:
+            return self.computer
         else:
-            return 'X'
+            return self.player
 
+    # Gets a list of available moves
     def get_moves(self):
         moves = []
         for r in range(3):
             for c in range(3):
-                if self.board[r][c] == ' ':
+                if self.board[r][c] == self.empty:
                     moves.append([r, c])
 
         return moves
 
+    # Checks if the game is tied
     def tied(self):
         if not self.has_won('X') and not self.has_won('Y') and self.is_board_full():
             return True

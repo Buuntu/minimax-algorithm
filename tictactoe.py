@@ -2,16 +2,14 @@
 # Tic Tac Toe game
 #
 # Designed so that the computer always wins or ties
+# Uses the minimax algorithm to calculate the next best move
 #
-# Uses Flask framework and AngularJS for the frontend
+# Written in Flask framework and AngularJS for the frontend
 #--------------------------------------------------------------------
 from flask import Flask, render_template, jsonify, request
 from game import Game
 
 app = Flask(__name__)
-
-# Initialize board
-game = Game('X', 'O')
 
 @app.route('/')
 def index():
@@ -28,25 +26,27 @@ def move():
 
     # Check if player won
     if game.has_won(game.player):
-        return jsonify(computer_wins = False, player_wins = True, board = game.board)
+        return jsonify(tied = False, computer_wins = False, player_wins = True, board = game.board)
     elif game.tied():
         return jsonify(tied = True, computer_wins = False, player_wins = False, board = game.board)
 
     # Calculate computer move
     computer_move = game.calculate_move()
 
-    # Board is not full
-    if computer_move:
-        game.make_computer_move(computer_move['row'], computer_move['col'])
+    # Make the next move
+    game.make_computer_move(computer_move['row'], computer_move['col'])
 
     # Check if computer won
     if game.has_won(game.computer):
         return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
-                       computer_wins = True, player_wins = False, board = game.board)
+                       computer_wins = True, player_wins = False, tied=False, board = game.board)
+    elif game.tied():
+        return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
+                       computer_wins = False, player_wins = False, tied=True, board=game.board)
 
     return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
                    computer_wins = False, player_wins = False, board = game.board)
 
 if __name__ == '__main__':
-    app.debug = True
+    # app.debug = True
     app.run(host='0.0.0.0')
