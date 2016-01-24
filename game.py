@@ -29,7 +29,7 @@ class Game:
     # minimax algorithm (using alpha beta pruning to speed up) to calculate the best move for the computer
     # assigning 1 for player win, 0 for draw, and -1 for computer win
     def minimax(self, mark, alpha, beta):
-        # Check if the game is over
+        # Check if the game is over and return assigned value if it is
         if self.has_won(self.player):
             return [1, None]
         elif self.has_won(self.computer):
@@ -37,20 +37,23 @@ class Game:
         elif self.tied():
             return [0, None]
 
+        # If it's the player's turn
         if mark == self.player:
+            # Loop through available moves
             for move in self.get_moves():
                 new_board = Game(self.player, self.computer)
                 new_board.board = deepcopy(self.board)
                 alpha_copy = deepcopy(alpha)
                 beta_copy = deepcopy(beta)
 
+                # Recursive call to get value for each node
                 value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark), alpha_copy, beta_copy)[0]
 
                 # if next move is max
                 if value > alpha[0]:
                     alpha = [value, move]
 
-                # alpha beta pruning
+                # "prune" branches
                 if alpha[0] >= beta[0]:
                     return alpha
 
@@ -62,6 +65,7 @@ class Game:
                 alpha_copy = deepcopy(alpha)
                 beta_copy = deepcopy(beta)
 
+                # Recursive call
                 value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark), alpha_copy, beta_copy)[0]
 
                 # if next move is min
@@ -74,6 +78,7 @@ class Game:
 
             return beta
 
+    # Get the "opposite" mark
     def opponent(self, mark):
         if mark == self.player:
             return self.computer
@@ -92,7 +97,7 @@ class Game:
 
     # Checks if the game is tied
     def tied(self):
-        if not self.has_won('X') and not self.has_won('Y') and self.is_board_full():
+        if not self.has_won(self.player) and not self.has_won(self.computer) and self.is_board_full():
             return True
 
         return False
@@ -166,6 +171,7 @@ class Game:
 
         return self
 
+    # Pick a random corner
     def random_corner(self):
         i = randint(1, 4)
         if i == 1:

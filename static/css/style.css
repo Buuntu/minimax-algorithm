@@ -72,6 +72,10 @@
     background-color: #6BB2EA !important;
 }
 
+.right-padding {
+    padding-right: 35px;
+}
+
 @media (max-width: 600px){
     html, body {
       font-size: 130%;

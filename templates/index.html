@@ -31,12 +31,24 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="height: 50px">
+        <div class="row" style="height: 10px"></div>
+        <div class="row">
+            <div class="col-xs-offset-5 col-xs-2 right-padding">
+                <p class="pull-right right-padding"><strong>Your score:</strong> <span ng-bind="score_player"></span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-offset-5 col-xs-2 right-padding">
+                <p class="pull-right right-padding"><strong>Computer's score:</strong> <span ng-bind="score_computer"></span></p>
+            </div>
+        </div>
+        <div class="row" style="height: 10px">
             <div class="col-xs-12 text-center">
                 <img ng-show="loading" id="loader" src="/static/img/ajax-loader.gif">
             </div>
         </div>
         <div ng-show="! new_game">
+            <div class="row" style="height: 15px"></div>
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <button type="button" class="btn btn-info btn-lg" ng-click="restart()" ng-disabled="new_game">Start Over</button>
@@ -47,15 +59,15 @@
         <div ng-show="new_game">
             <div class="row" style="height: 60px">
                 <div class="col-xs-12 text-center">
-                    <h3>Who goes first?</h3>
+                    <h3>Do you want to start?</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <button type="button" class="btn btn-primary btn-lg choice pull-right" ng-click="player_goes_first()">Player</button>
+                    <button type="button" class="btn btn-primary btn-lg choice pull-right" ng-click="player_goes_first()">Yes</button>
                 </div>
                 <div class="col-xs-6 pull-left">
-                    <button type="button" class="btn btn-primary btn-lg choice" ng-click="computer_goes_first()">Computer</button>
+                    <button type="button" class="btn btn-primary btn-lg choice" ng-click="computer_goes_first()">No</button>
                 </div>
             </div>
         </div>

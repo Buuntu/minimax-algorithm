@@ -2,7 +2,8 @@
 # Tic Tac Toe game
 #
 # Designed so that the computer always wins or ties
-# Uses the minimax algorithm to calculate the next best move
+# Uses the minimax algorithm with alpha beta pruning to calculate the
+#  next best move
 #
 # Written in Flask framework and AngularJS for the frontend
 #--------------------------------------------------------------------
@@ -27,7 +28,7 @@ def move():
     # Check if player won
     if game.has_won(game.player):
         return jsonify(tied = False, computer_wins = False, player_wins = True, board = game.board)
-    elif game.tied():
+    elif game.is_board_full():
         return jsonify(tied = True, computer_wins = False, player_wins = False, board = game.board)
 
     # Calculate computer move
@@ -40,10 +41,12 @@ def move():
     if game.has_won(game.computer):
         return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
                        computer_wins = True, player_wins = False, tied=False, board = game.board)
-    elif game.tied():
+    # Check if game is over
+    elif game.is_board_full():
         return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
                        computer_wins = False, player_wins = False, tied=True, board=game.board)
 
+    # Game still going
     return jsonify(computer_row = computer_move['row'], computer_col = computer_move['col'],
                    computer_wins = False, player_wins = False, board = game.board)
 

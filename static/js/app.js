@@ -1,6 +1,5 @@
 var app = angular.module("myApp", []);
 
-
 app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     $scope.inactive = true;
     $scope.loading = false;
@@ -8,6 +7,8 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     $scope.game_over = false;
     $scope.message = '';
     $scope.winning = [[], [], []];
+    $scope.score_player = 0;
+    $scope.score_computer = 0;
 
     $scope.click = function(row, col) {
         // Do nothing if the game is over
@@ -28,6 +29,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
                     $scope.winning[row][col] = 1;
                 }
                 $scope.message = 'You won! :)';
+                $scope.score_player++;
                 $scope.game_over = true;
                 return;
             }
@@ -53,6 +55,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
                         $scope.winning[row][col] = 1;
                     }
                     $scope.message = 'You lost :(';
+                    $scope.score_computer++;
                     $scope.game_over = true
                 }
                 else if (is_board_full()) {
@@ -60,8 +63,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
                     $scope.game_over = true;
                 }
 
-
-                //$scope.inactive = false;
+                $scope.inactive = false;
             }, function(response) {
                 $scope.loading = false;
                 alert('Server error');
