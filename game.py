@@ -18,7 +18,7 @@ class Game:
             move = self.random_corner()
             return {'row': move[0], 'col': move[1]}
 
-        move = self.minimax(self.computer)
+        move = self.minimax(self.computer, [-2, None], [2, None])
 
         if not move[1]:
             # Game is over
@@ -26,9 +26,9 @@ class Game:
         else:
             return {'row': move[1][0], 'col': move[1][1]}
 
-    # minimax algorithm to calculate the best move for the computer
+    # minimax algorithm (using alpha beta pruning to speed up) to calculate the best move for the computer
     # assigning 1 for player win, 0 for draw, and -1 for computer win
-    def minimax(self, mark):
+    def minimax(self, mark, alpha, beta):
         # Check if the game is over
         if self.has_won(self.player):
             return [1, None]
@@ -38,29 +38,41 @@ class Game:
             return [0, None]
 
         if mark == self.player:
-            best = [-2, None]
+            for move in self.get_moves():
+                new_board = Game(self.player, self.computer)
+                new_board.board = deepcopy(self.board)
+                alpha_copy = deepcopy(alpha)
+                beta_copy = deepcopy(beta)
+
+                value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark), alpha_copy, beta_copy)[0]
+
+                # if next move is max
+                if value > alpha[0]:
+                    alpha = [value, move]
+
+                # alpha beta pruning
+                if alpha[0] >= beta[0]:
+                    return alpha
+
+            return alpha
         else:
-            best = [+2, None]
+            for move in self.get_moves():
+                new_board = Game(self.player, self.computer)
+                new_board.board = deepcopy(self.board)
+                alpha_copy = deepcopy(alpha)
+                beta_copy = deepcopy(beta)
 
-        # Loop through all available moves
-        for move in self.get_moves():
-            # Duplicate board and make move
-            new_board = Game(self.player, self.computer)
-            new_board.board = deepcopy(self.board)
+                value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark), alpha_copy, beta_copy)[0]
 
-            # Make the move and recursively calculate the value of the next move
-            value = new_board.move(mark, move[0], move[1]).minimax(self.opponent(mark))[0]
+                # if next move is min
+                if value < beta[0]:
+                    beta = [value, move]
 
-            # Player moves
-            if mark == self.player:
-                if value > best[0]:
-                    best = [value, move]
-            # Computer moves
-            else:
-                if value < best[0]:
-                    best = [value, move]
+                # alpha beta pruning
+                if beta[0] <= alpha[0]:
+                    return beta
 
-        return best
+            return beta
 
     def opponent(self, mark):
         if mark == self.player:
