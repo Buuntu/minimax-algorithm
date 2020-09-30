@@ -1,4 +1,4 @@
-# TicTacToe-Flask
+# TicTacToe-Flask #An Amazing Project
 Lightweight tic tac toe game using Flask framework and Angular.  AI uses the minimax algorithm to calculate moves.  Good luck
 trying to win.
 
